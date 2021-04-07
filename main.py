@@ -1,7 +1,8 @@
 from pytube import YouTube
 import pprint
 
-links = ['https://www.youtube.com/watch?v=-f9U11pbQQI']
+links = ['']
+save_location = r'C:\propriu\temp\01_new_youtube videos\videos'
 
 for link in links:
 
@@ -13,7 +14,7 @@ for link in links:
     for itag in [22, 45]:
         print('Trying to download itag {}...'.format(itag))
         try:
-            video.streams.get_by_itag(22).download()
+            video.streams.get_by_itag(22).download(save_location)
             print('Downloaded successfully !')
             break
         except:
