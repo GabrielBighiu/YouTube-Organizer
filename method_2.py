@@ -9,7 +9,7 @@ import pprint,\
     traceback
 
 links = ['']
-save_location = r'C:\propriu\temp\01_new_youtube videos\videos'
+save_location = r'C:\propriu\temp\01_new_youtube videos'
 
 def parse_url(link):
 
