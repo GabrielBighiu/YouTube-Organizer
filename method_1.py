@@ -3,7 +3,8 @@ import youtube_dl,\
 
 download_list = ['']
 
-ydl_opts = {'outtmpl': r'C:\propriu\temp\01_new_youtube videos\%(title)s.%(ext)s'}
+ydl_opts = {'outtmpl': r'C:\propriu\temp\01_new_youtube videos\%(title)s.%(ext)s',
+            'format': '[height <=? 720]'}
 with youtube_dl.YoutubeDL(ydl_opts) as ydl:
     for video_link in download_list:
         while True:
