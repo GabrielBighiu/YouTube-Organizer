@@ -7,11 +7,13 @@ import youtube_dl,\
 ydl_opts = {'outtmpl': r'C:\propriu\temp\01_new_youtube videos\%(title)s.%(ext)s',
             'format': '[height <=? 720]'}
 
+cloud_storage_root = r'C:\Users\g4m3rx\OneDrive\backups_laptop'
+
 class YTdownloader():
 
     def __init__(self):
-        if os.path.isfile('watched_vids.json'):
-            with open ('watched_vids.json', 'r') as json_file_handle:
+        if os.path.isfile(os.path.join(cloud_storage_root, 'watched_vids.json')):
+            with open (os.path.join(cloud_storage_root, 'watched_vids.json'), 'r') as json_file_handle:
                 self.watched_vids = json.load(json_file_handle)
         else:
             self.watched_vids = {}
@@ -35,7 +37,7 @@ class YTdownloader():
                 self.watched_vids[video_id] = {'download_time': str(datetime.datetime.now())}
 
     def save_on_disk(self):
-        with open('watched_vids.json', 'w') as json_file_handle:
+        with open(os.path.join(cloud_storage_root, 'watched_vids.json'), 'w') as json_file_handle:
             json.dump(self.watched_vids, json_file_handle, indent=2)
 
         print('Json saved on the disk.')
