@@ -56,7 +56,8 @@ class YTdownloader():
                         print('Exception found in {}. Retrying in 10 sec...'.format(video_link))
                         time.sleep(10)
 
-worker = YTdownloader()
-worker.analyze_input_list()
-worker.download_unwatched_vids()
-worker.save_on_disk()
+if __name__ == '__main__':
+    worker = YTdownloader()
+    worker.analyze_input_list()
+    worker.download_unwatched_vids()
+    worker.save_on_disk()
