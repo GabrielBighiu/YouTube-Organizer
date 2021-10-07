@@ -124,6 +124,7 @@ class FormControls(YTdownloader,
 
     def get_input_links_from_GUI(self):
         self.all_input_rows = list(filter(lambda x:x!='', [entry.strip() for entry in self.input_frame.return_input_data().split('\n')]))
+        self.all_input_rows = [entry.split('&')[0] if '&' in entry else entry for entry in self.all_input_rows]
 
 class FormInput():
 

@@ -17,6 +17,8 @@ class YTdownloader():
     def __init__(self):
         super(YTdownloader, self).__init__()
 
+    def load_watched_from_disc(self):
+
         if path.isfile(path.join(cloud_storage_root, 'watched_vids.json')):
             with open (path.join(cloud_storage_root, 'watched_vids.json'), 'r') as json_file_handle:
                 self.watched_vids = load(json_file_handle)
@@ -26,6 +28,7 @@ class YTdownloader():
 
     def analyze_input(self):
 
+        self.load_watched_from_disc()
         self.analyzed_input = {'id_already_watched': [],
                                'id_not_watched': []}
 
