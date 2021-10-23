@@ -3,7 +3,7 @@ from os import path
 from json import load,\
     dump
 from datetime import datetime
-from youtube_dl import YoutubeDL
+from yt_dlp import YoutubeDL
 from time import sleep
 
 from _00_config import cloud_storage_root
