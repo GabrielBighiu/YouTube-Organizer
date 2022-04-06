@@ -5,6 +5,7 @@ from json import load,\
 from datetime import datetime
 from yt_dlp import YoutubeDL
 from time import sleep
+from random import getrandbits
 
 from _00_config import cloud_storage_root
 
@@ -55,10 +56,12 @@ class YTdownloader():
 
         self._log.info('Json saved on the disk.')
 
-    def download_unwatched_vids(self):
+    def download_unwatched_vids(self,
+                                download_path):
 
-        with YoutubeDL(self.ydl_opts) as ydl:
-            for video_link in self.analyzed_input['id_not_watched']:
+        for video_link in self.analyzed_input['id_not_watched']:
+            self.ydl_opts['outtmpl'] = path.join(download_path, f"{getrandbits(20)}_%(title)s.%(ext)s")
+            with YoutubeDL(self.ydl_opts) as ydl:
                 while True:
                     try:
                         ydl.download([video_link])

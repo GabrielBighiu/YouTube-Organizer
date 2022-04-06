@@ -117,9 +117,8 @@ class FormControls(YTdownloader,
 
         self.ydl_opts = ydl_opts
         self.ydl_opts['logger'] = self._log
-        self.ydl_opts['outtmpl'] = self.download_path.get() + '\%(title)s.%(ext)s'
 
-        self.download_unwatched_vids()
+        self.download_unwatched_vids(download_path = self.download_path.get())
         self.save_on_disk()
 
     def get_input_links_from_GUI(self):
