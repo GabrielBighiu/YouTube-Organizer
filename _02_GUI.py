@@ -7,9 +7,8 @@ from tkinter import ttk, N, S, E, W, END
 from threading import Thread
 
 from _00_base import configure_logger_and_queue
-from _01_pyYoutube_dll import YTdownloader
-from _00_config import ydl_opts,\
-    possible_out_paths
+from _01_py_yt_org import YTdownloader
+from _00_config import possible_out_paths
 
 class ConsoleUi(configure_logger_and_queue):
     """Poll messages from a logging queue and display them in a scrolled text widget"""
@@ -115,11 +114,12 @@ class FormControls(YTdownloader,
         self.get_input_links_from_GUI()
         self.analyze_input()
 
-        self.ydl_opts = ydl_opts
-        self.ydl_opts['logger'] = self._log
-
-        self.download_unwatched_vids(download_path = self.download_path.get())
-        self.save_on_disk()
+        download_status = self.download_unwatched_vids(download_path = self.download_path.get())
+        if download_status == 'success':
+            self.save_on_disk()
+        else:
+            downloaded_successfully = '\n'.join(download_status)
+            self._log.error(f"I could only download:\n{downloaded_successfully}")
 
     def get_input_links_from_GUI(self):
         self.all_input_rows = list(filter(lambda x:x!='', [entry.strip() for entry in self.input_frame.return_input_data().split('\n')]))
