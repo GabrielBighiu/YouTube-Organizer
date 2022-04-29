@@ -31,7 +31,7 @@ def configure_logger():
     ch = StreamHandler(stream=stdout)
     ch.setLevel(DEBUG)
     ch.setFormatter(CustomFormatter())
-    fh = FileHandler("runtime_log.log")
+    fh = FileHandler("runtime_log.log", 'a', 'utf-8')
     fh.setLevel(DEBUG)
     fh.setFormatter(Formatter('%(asctime)s,%(msecs)d %(levelname)-4s [%(filename)s:%(lineno)d -> %(name)s - %(funcName)s] ___ %(message)s'))
 
