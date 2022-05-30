@@ -90,7 +90,13 @@ class YTdownloader():
                         break
                 else:
                     success = 0
+                    video_part_processed = False
                     for format_group in format_descriptor:
+
+                        # if the video part has been processed but could not be downloaded, do not attempt to download the video part
+                        if video_part_processed and success == 0:
+                            break
+
                         for group_option in format_group:
                             self._log.info(f"Downloading {video_link} with format {group_option}")
                             if self.download_format(video_link=video_link,
@@ -100,6 +106,7 @@ class YTdownloader():
                                 success += 1
                                 download_success.append(video_link)
                                 break
+                        video_part_processed = True
                     if success == 2:
                         downloaded = True
                         break
