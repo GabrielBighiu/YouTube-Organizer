@@ -14,7 +14,8 @@ download_formats_prio = [
     [[247], [139, 249, 250, 140, 251]], # webm 720p video only + any audio
     [[135], [139, 249, 250, 140, 251]], # mp4 480p video only + any audio
     [[168,218,244,245,246], [139, 249, 250, 140, 251]], # webm 480p video only + any audio
-    [[243], [139, 249, 250, 140, 251]] # 360p, webm_dash
+    [[243], [139, 249, 250, 140, 251]], # 360p, webm_dash
+    [[242], [139, 249, 250, 140, 251]] # 240p, webm_dash
 ]
 
 # the folder where the downloads catalog will be saved
