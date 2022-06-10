@@ -1,17 +1,17 @@
 from logging import Logger
 from os import path
-from json import load,\
+from json import load, \
     dump
 from datetime import datetime
 from yt_dlp import YoutubeDL
 from logging import getLogger
 from random import getrandbits
-from _00_config import cloud_storage_root,\
+from _00_config import cloud_storage_root, \
     download_formats_prio
 from traceback import format_exc
 
-class YTdownloader():
 
+class YTdownloader():
     _log: Logger
     all_input_rows: list
 
@@ -21,11 +21,10 @@ class YTdownloader():
     def load_watched_from_disc(self):
 
         if path.isfile(path.join(cloud_storage_root, 'watched_vids.json')):
-            with open (path.join(cloud_storage_root, 'watched_vids.json'), 'r') as json_file_handle:
+            with open(path.join(cloud_storage_root, 'watched_vids.json'), 'r') as json_file_handle:
                 self.watched_vids = load(json_file_handle)
         else:
             self.watched_vids = {}
-
 
     def analyze_input(self):
 
@@ -37,7 +36,7 @@ class YTdownloader():
 
             if '?v=' in raw_data:
                 video_id = raw_data.split('?v=')[-1]
-            else: # else used in case only IDs are provided for a quick sync-up
+            else:  # else used in case only IDs are provided for a quick sync-up
                 video_id = raw_data
 
             if video_id in self.watched_vids.keys():
@@ -48,7 +47,6 @@ class YTdownloader():
 
         self._log.info('Watched_vids:\n{}'.format('\n'.join(self.analyzed_input['id_already_watched'])))
         self._log.info('NOT watched_vids:\n{}'.format('\n'.join(self.analyzed_input['id_not_watched'])))
-
 
     def save_on_disk(self):
         with open(path.join(cloud_storage_root, 'watched_vids.json'), 'w') as json_file_handle:
@@ -68,7 +66,8 @@ class YTdownloader():
                 ydl.download([video_link])
                 return True
         except:
-            self._log.error(f"Found exception while downloading {video_link}, format {format}\n{format_exc(chain=False)}")
+            self._log.error(
+                f"Found exception while downloading {video_link}, format {format}\n{format_exc(chain=False)}")
             return False
 
     def download_unwatched_vids(self,
@@ -93,7 +92,11 @@ class YTdownloader():
                     video_part_processed = False
                     for format_group in format_descriptor:
 
-                        # if the video part has been processed but could not be downloaded, do not attempt to download the video part
+                        """
+                        if the video part has been processed but could not be downloaded,
+                        do not attempt to download the video part
+                        """
+
                         if video_part_processed and success == 0:
                             break
 

@@ -1,6 +1,6 @@
 import tkinter as tk
 from queue import Empty
-from signal import signal,\
+from signal import signal, \
     SIGINT
 from tkinter.scrolledtext import ScrolledText
 from tkinter import ttk, N, S, E, W, END
@@ -9,6 +9,7 @@ from threading import Thread
 from _00_base import configure_logger_and_queue
 from _01_py_yt_org import YTdownloader
 from _00_config import possible_out_paths
+
 
 class ConsoleUi(configure_logger_and_queue):
     """Poll messages from a logging queue and display them in a scrolled text widget"""
@@ -60,6 +61,7 @@ class ConsoleUi(configure_logger_and_queue):
         self.scrolled_text.configure(state='normal')
         self.scrolled_text.delete('1.0', END)
         self.scrolled_text.configure(state='disabled')
+
 
 class FormControls(YTdownloader,
                    configure_logger_and_queue):
@@ -114,7 +116,7 @@ class FormControls(YTdownloader,
         self.get_input_links_from_GUI()
         self.analyze_input()
 
-        download_status = self.download_unwatched_vids(download_path = self.download_path.get())
+        download_status = self.download_unwatched_vids(download_path=self.download_path.get())
         if download_status == 'success':
             self.save_on_disk()
         else:
@@ -122,8 +124,10 @@ class FormControls(YTdownloader,
             self._log.error(f"I could only download:\n{downloaded_successfully}")
 
     def get_input_links_from_GUI(self):
-        self.all_input_rows = list(filter(lambda x:x!='', [entry.strip() for entry in self.input_frame.return_input_data().split('\n')]))
+        self.all_input_rows = list(
+            filter(lambda x: x != '', [entry.strip() for entry in self.input_frame.return_input_data().split('\n')]))
         self.all_input_rows = [entry.split('&')[0] if '&' in entry else entry for entry in self.all_input_rows]
+
 
 class FormInput():
 
@@ -136,6 +140,7 @@ class FormInput():
 
     def return_input_data(self):
         return self.scrolled_text_input_links.get("1.0", END)
+
 
 class App():
 
@@ -163,10 +168,12 @@ class App():
     def quit(self):
         self.root.destroy()
 
+
 def main():
     root = tk.Tk()
     app = App(root)
     app.root.mainloop()
+
 
 if __name__ == '__main__':
     main()

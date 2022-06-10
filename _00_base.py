@@ -1,10 +1,11 @@
-from logging import basicConfig,\
-    INFO, DEBUG, WARNING, ERROR, CRITICAL,\
-    Formatter,\
-    StreamHandler, FileHandler, Handler,\
+from logging import basicConfig, \
+    INFO, DEBUG, WARNING, ERROR, CRITICAL, \
+    Formatter, \
+    StreamHandler, FileHandler, Handler, \
     getLogger
 from sys import stdout
 from queue import Queue
+
 
 def configure_logger():
     class CustomFormatter(Formatter):
@@ -33,17 +34,20 @@ def configure_logger():
     ch.setFormatter(CustomFormatter())
     fh = FileHandler("runtime_log.log", 'a', 'utf-8')
     fh.setLevel(DEBUG)
-    fh.setFormatter(Formatter('%(asctime)s,%(msecs)d %(levelname)-4s [%(filename)s:%(lineno)d -> %(name)s - %(funcName)s] ___ %(message)s'))
+    fh.setFormatter(Formatter(
+        '%(asctime)s,%(msecs)d %(levelname)-4s [%(filename)s:%(lineno)d -> %(name)s - %(funcName)s] ___ %(message)s'))
 
     basicConfig(datefmt='%Y-%m-%d:%H:%M:%S',
                 level=DEBUG,
-                handlers=[fh,ch])
+                handlers=[fh, ch])
+
 
 class QueueHandler(Handler):
     """Class to send logging records to a queue
     It can be used from different threads
     The ConsoleUi class polls this queue to display records in a ScrolledText widget
     """
+
     # Example from Moshe Kaplan: https://gist.github.com/moshekaplan/c425f861de7bbf28ef06
     # (https://stackoverflow.com/questions/13318742/python-logging-to-tkinter-text-widget) is not thread safe!
     # See https://stackoverflow.com/questions/43909849/tkinter-python-crashes-on-new-thread-trying-to-log-on-main-thread
@@ -55,9 +59,9 @@ class QueueHandler(Handler):
     def emit(self, record):
         self.log_queue.put(record)
 
+
 class configure_logger_and_queue():
     def __init__(self):
-
         super(configure_logger_and_queue, self).__init__()
 
         configure_logger()
