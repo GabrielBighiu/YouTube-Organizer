@@ -5,7 +5,9 @@ from signal import signal, \
 from tkinter.scrolledtext import ScrolledText
 from tkinter import ttk, N, S, E, W, END
 from threading import Thread
-
+from CustomTkinter.customtkinter.widgets.ctk_button import CTkButton
+from CustomTkinter.customtkinter.widgets.ctk_switch import CTkSwitch
+from CustomTkinter.customtkinter.windows.ctk_tk import CTk
 from _00_base import configure_logger_and_queue
 from _01_py_yt_org import YTdownloader
 from _00_config import possible_out_paths
@@ -21,7 +23,7 @@ class ConsoleUi(configure_logger_and_queue):
         self.frame = frame
 
         # add a button to clear the text
-        self.button_just_add = ttk.Button(self.frame, text='CLEAR CONSOLE', command=self.clear_console)
+        self.button_just_add = CTkButton(self.frame, text='CLEAR CONSOLE', command=self.clear_console)
         self.button_just_add.grid(column=0, row=0, sticky=W)
 
         # Create a ScrolledText wdiget
@@ -75,7 +77,7 @@ class FormControls(YTdownloader,
 
         self.frame = frame
 
-        self.button_just_add = ttk.Button(self.frame, text='JUST ADD', command=self.just_add)
+        self.button_just_add = CTkButton(self.frame, text='JUST ADD', command=self.just_add)
         self.button_just_add.grid(column=0, row=1, sticky=W)
 
         self.download_path = tk.StringVar()
@@ -89,10 +91,10 @@ class FormControls(YTdownloader,
         self.combobox_download_dir.current(0)
         self.combobox_download_dir.grid(column=1, row=2, sticky=(W))
 
-        self.button_download = ttk.Button(self.frame, text='DOWNLOAD', command=self.download_master)
+        self.button_download = CTkButton(self.frame, text='DOWNLOAD', command=self.download_master)
         self.button_download.grid(column=0, row=2, sticky=W)
 
-        self.button_check_watched = ttk.Button(self.frame, text='CHECK WATCHED', command=self.check_watched)
+        self.button_check_watched = CTkButton(self.frame, text='CHECK WATCHED', command=self.check_watched)
         self.button_check_watched.grid(column=0, row=3, sticky=W)
 
     def just_add(self):
@@ -144,9 +146,14 @@ class FormInput():
 
 class App():
 
+    WIDTH = 1200
+    HEIGHT = 900
+
     def __init__(self, root):
         self.root = root
         root.title('pyYoutube_dll')
+
+        self.root.geometry(f"{App.WIDTH}x{App.HEIGHT}")
 
         input_frame = ttk.Labelframe(text="Input")
         input_frame.grid(row=1, column=0, sticky="nsew")
@@ -161,6 +168,11 @@ class App():
         console_frame.grid(row=0, column=1, sticky="nsew", rowspan=2)
         self.console_frame = ConsoleUi(console_frame)
 
+        self.switch_2 = CTkSwitch(master=input_frame,
+                                  text="Dark Mode",
+                                  command=self.change_mode)
+        self.switch_2.grid(row=10, column=0, pady=10, padx=20, sticky="w")
+
         self.root.protocol('WM_DELETE_WINDOW', self.quit)
         self.root.bind('<Control-q>', self.quit)
         signal(SIGINT, self.quit)
@@ -168,9 +180,15 @@ class App():
     def quit(self):
         self.root.destroy()
 
+    def change_mode(self):
+        if self.switch_2.get() == 1:
+            self.root.set_appearance_mode("dark")
+        else:
+            self.root.set_appearance_mode("light")
+
 
 def main():
-    root = tk.Tk()
+    root = CTk()
     app = App(root)
     app.root.mainloop()
 
