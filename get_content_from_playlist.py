@@ -4,11 +4,11 @@ from bs4 import BeautifulSoup
 
 user_response = input("Would you like to get links via LINK or LOCAL html? [LINK/LOCAL]: ")
 
+link = ''
 
 if user_response.strip().lower() == "link":
     import urllib3
     http = urllib3.PoolManager()
-    link = r'https://youtube.com/playlist?list=PLp8Axve-PKDiA0eqrub2qZ9qwmjFbA3Rn'
     r = http.request('GET', link, preload_content=False).data.decode('utf-8')
 
     base = "https://www.youtube.com/watch?v="
@@ -59,18 +59,3 @@ elif user_response.strip().lower() == "local":
 else:
     print("Abort")
     sys.exit(0)
-
-"""
-base = https://www.youtube.com/watch?v=
-videoId = kc7DJ6uRkcI
-playlistId = PLp8Axve-PKDiA0eqrub2qZ9qwmjFbA3Rn
-index=87
-
-link = f"{{base}}{{videoId}}&list={{playlistId}}&index={{index}}"
-
-
-get from str:
-"watchEndpoint":{"videoId":"oh40Hcaj2n8","playlistId":"PLp8Axve-PKDiA0eqrub2qZ9qwmjFbA3Rn","index":1
-stop parsing at "params"
-"""
-
