@@ -2,12 +2,13 @@ import json, sys
 
 from bs4 import BeautifulSoup
 
-user_response = input("Would you like to get links via LINK or LOCAL html? [LINK/LOCAL]: ")
+user_response = input("Would you like to get links via LINK or LOCAL html? [LINK/LOCAL/SELENIUM]: ")
 
 link = ''
 
 if user_response.strip().lower() == "link":
     import urllib3
+
     http = urllib3.PoolManager()
     r = http.request('GET', link, preload_content=False).data.decode('utf-8')
 
@@ -45,6 +46,7 @@ if user_response.strip().lower() == "link":
 elif user_response.strip().lower() == "local":
     # if YouTube playlist has more than 100 clips, they won't be loaded, use local version
     import os
+
     html_file = os.path.join("input_html_playlist",
                              [file for file in os.listdir("input_html_playlist") if file.endswith(".html")][0])
 
@@ -55,6 +57,46 @@ elif user_response.strip().lower() == "local":
         split_me = "<a id=\"video-title\" class=\"yt-simple-endpoint style-scope ytd-playlist-video-renderer\" href=\""
         if split_me in line:
             print(line.split(split_me)[1].split("\" title")[0])
+
+elif user_response.strip().lower() == "selenium":
+    from selenium import webdriver
+    from selenium.webdriver.chrome.service import Service
+    from webdriver_manager.chrome import ChromeDriverManager
+    from selenium.webdriver.common.by import By
+    from selenium.webdriver.support.ui import WebDriverWait
+    from selenium.webdriver.support import expected_conditions as EC
+    import time
+
+    youtube_link = input("Insert youtube link: ").strip()
+    # Set up the webdriver
+    chromedriver = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=chromedriver)
+
+    # Load the webpage
+    driver.get(youtube_link)
+    cookies = "//button[contains(@class,'VfPpkd-LgbsSe VfPpkd-LgbsSe-OWXEXe-k8QpJ VfPpkd-LgbsSe-OWXEXe-dgl2Hf nCP5yc AjY5Oe DuMIQc LQeN7 IIdkle')]"
+
+    while True:
+        accept_button = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, cookies)))
+
+        accept_button.click()
+        time.sleep(1)
+        driver.execute_script("window.scrollTo(0, 25000)")
+        time.sleep(1)
+        driver.execute_script("window.scrollTo(0, 35000)")
+        time.sleep(1)
+        break
+
+    page_source = driver.page_source
+    driver.quit()
+    base = "https://www.youtube.com/"
+
+    soup = BeautifulSoup(page_source, features="html.parser")
+    references = soup.find_all("a", class_="yt-simple-endpoint style-scope ytd-playlist-video-renderer")
+    playlist_links = [f"{base}{ref.attrs['href']}" for ref in references]
+
+    print(playlist_links)
 
 else:
     print("Abort")
