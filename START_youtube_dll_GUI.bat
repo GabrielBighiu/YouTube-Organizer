@@ -1,2 +1,2 @@
-python _02_GUI.py
+py _02_GUI.py
 pause

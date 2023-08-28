@@ -1,8 +1,8 @@
 from moviepy.editor import VideoFileClip
 import os
 
-videos_path = r"D:\Youtube\videos"
-mp3_path = r"D:\Youtube\music"
+videos_path = r"D:\Github\DownloadResources\vids"
+mp3_path = r"D:\Github\DownloadResources\music"
 
 for file in os.listdir(videos_path):
     if file.endswith("mp4"):

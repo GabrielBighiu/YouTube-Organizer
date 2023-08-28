@@ -19,10 +19,10 @@ download_formats_prio = [
 ]
 
 # the folder where the downloads catalog will be saved
-cloud_storage_root = r'C:\Users\g4m3rx\OneDrive\backup_auto'
+cloud_storage_root = r'D:\Github\DownloadResources\bkp'
 
 # the paths to be shown in the GUI as selectable paths
 possible_out_paths = [
-    r'C:\propriu\temp\01_new_youtube videos',
-    r'C:\propriu\temp\01_new_youtube music'
+    r'D:\Github\DownloadResources\vids',
+    r'D:\Github\DownloadResources\music'
 ]
